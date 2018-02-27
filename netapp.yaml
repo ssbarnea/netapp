@@ -1,0 +1,21 @@
+#!/usr/bin/env ansible-playbook
+- hosts: localhost
+  connection: local
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python"
+  environment:
+    PATH: "{{ ansible_env.PATH }}"
+    VIRTUAL_ENV: "{{ ansible_env.VIRTUAL_ENV }}"
+  tasks:
+
+  - shell: python -c "import shade"
+    no_log: false
+
+  - name: launch an instance
+    os_server:
+      name: netapp
+      state: present
+      image: DataONTAPv
+      flavor: m1.large.small.disk
+      network: core-ci-tools-network
+      cloud: core-ci-tools
